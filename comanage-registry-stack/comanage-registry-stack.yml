@@ -1,0 +1,111 @@
+version: '3.1'
+
+services:
+
+    comanage-registry-database:
+        image: sphericalcowgroup/comanage-registry-postgres
+        volumes:
+            - /srv/docker/var/lib/postgresql/data:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password
+            - COMANAGE_REGISTRY_POSTGRES_USER_PASSWORD_FILE=/run/secrets/comanage_registry_postgres_user_password
+        secrets:
+            - postgres_password
+            - comanage_registry_postgres_user_password
+        networks:
+            - default
+        deploy:
+            replicas: 1
+
+    comanage-registry-ldap:
+        image: sphericalcowgroup/comanage-registry-slapd
+        command: ["slapd", "-d", "256", "-h", "ldapi:/// ldap://127.0.0.1 ldaps:///", "-u", "openldap", "-g", "openldap"]
+        volumes:
+            - /srv/docker/var/lib/ldap:/var/lib/ldap
+            - /srv/docker/etc/ldap/slapd.d:/etc/ldap/slapd.d
+        environment:
+            - SLAPD_CERT_FILE=/run/secrets/slapd_cert_file
+            - SLAPD_PRIVKEY_FILE=/run/secrets/slapd_privkey_file
+            - SLAPD_CHAIN_FILE=/run/secrets/slapd_chain_file
+            - OLC_ROOT_PW_FILE=/run/secrets/olc_root_pw
+            - OLC_SUFFIX=dc=mwatelescope,dc=org
+            - OLC_ROOT_DN=cn=admin,dc=mwatelescope,dc=org
+        secrets:
+            - slapd_cert_file
+            - slapd_privkey_file
+            - slapd_chain_file
+            - olc_root_pw
+        networks:
+            - default
+        ports:
+            - "636:636"
+            - "389:389"
+        deploy:
+            replicas: 1
+
+    comanage-registry:
+        image: sphericalcowgroup/comanage-registry:3.0.0-rc2-shibboleth-sp
+        volumes:
+            - /srv/docker/srv/comanage-registry/local:/srv/comanage-registry/local
+        environment:
+            - SHIBBOLETH_SP_ENTITY_ID=https://registry.mwatelescope.org/shibboleth
+            - SHIBBOLETH_SP_CERT=/run/secrets/shibboleth_sp_cert
+            - SHIBBOLETH_SP_PRIVKEY=/run/secrets/shibboleth_sp_privkey
+            - SHIBBOLETH_SP_SAMLDS_URL=https://registry.mwatelescope.org/registry/pages/eds/index
+            - SHIBBOLETH_SP_METADATA_PROVIDER_XML_FILE=/run/secrets/shibboleth_sp_metadata_provider_xml
+            - HTTPS_CERT_FILE=/run/secrets/https_cert_file
+            - HTTPS_PRIVKEY_FILE=/run/secrets/https_privkey_file
+            - COMANAGE_REGISTRY_ADMIN_GIVEN_NAME=ScottCmpAdmin
+            - COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=Koranda
+            - COMANAGE_REGISTRY_ADMIN_USERNAME=scott.koranda@sphericalcowgroup.com
+            - COMANAGE_REGISTRY_DATASOURCE=Database/Postgres
+            - COMANAGE_REGISTRY_DATABASE_USER_PASSWORD_FILE=/run/secrets/comanage_registry_database_user_password
+            - COMANAGE_REGISTRY_EMAIL_FROM='mwa.telescope.registry@gmail.com'
+            - COMANAGE_REGISTRY_EMAIL_TRANSPORT=Smtp
+            - COMANAGE_REGISTRY_EMAIL_HOST=tls://smtp.gmail.com
+            - COMANAGE_REGISTRY_EMAIL_PORT=465
+            - COMANAGE_REGISTRY_EMAIL_ACCOUNT=mwa.telescope.registry@gmail.com
+            - COMANAGE_REGISTRY_EMAIL_ACCOUNT_PASSWORD_FILE=/run/secrets/comanage_registry_email_account_password
+        secrets:
+            - shibboleth_sp_cert
+            - shibboleth_sp_privkey
+            - shibboleth_sp_metadata_provider_xml
+            - https_cert_file
+            - https_privkey_file
+            - comanage_registry_database_user_password
+            - comanage_registry_email_account_password
+        networks:
+            - default
+        ports:
+            - "80:80"
+            - "443:443"
+        deploy:
+            replicas: 1
+
+secrets:
+    postgres_password:
+        external: true
+    comanage_registry_postgres_user_password:
+        external: true
+    slapd_cert_file:
+        external: true
+    slapd_privkey_file:
+        external: true
+    slapd_chain_file:
+        external: true
+    olc_root_pw:
+        external: true
+    shibboleth_sp_cert:
+        external: true
+    shibboleth_sp_privkey:
+        external: true
+    shibboleth_sp_metadata_provider_xml:
+        external: true
+    https_cert_file:
+        external: true
+    https_privkey_file:
+        external: true
+    comanage_registry_database_user_password:
+        external: true
+    comanage_registry_email_account_password:
+        external: true
