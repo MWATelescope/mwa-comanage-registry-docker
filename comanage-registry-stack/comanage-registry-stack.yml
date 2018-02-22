@@ -66,6 +66,7 @@ services:
             - COMANAGE_REGISTRY_EMAIL_PORT=465
             - COMANAGE_REGISTRY_EMAIL_ACCOUNT=mwa.telescope.registry@gmail.com
             - COMANAGE_REGISTRY_EMAIL_ACCOUNT_PASSWORD_FILE=/run/secrets/comanage_registry_email_account_password
+            - SERVER_NAME=registry.mwatelescope.org
         secrets:
             - shibboleth_sp_cert
             - shibboleth_sp_privkey
