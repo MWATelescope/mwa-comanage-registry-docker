@@ -44,15 +44,15 @@ services:
             replicas: 1
 
     comanage-registry:
-        image: sphericalcowgroup/comanage-registry:3.1.1-shibboleth-sp
+        image: sphericalcowgroup/comanage-registry:3.2.1-shibboleth-sp-1
         volumes:
             - /srv/docker/srv/comanage-registry/local:/srv/comanage-registry/local
             - /srv/docker/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
             - /srv/docker/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
             - /srv/docker/etc/shibboleth/mwa-proxy-metadata.xml:/etc/shibboleth/mwa-proxy-metadata.xml
         environment:
-            - SHIBBOLETH_SP_CERT=/run/secrets/shibboleth_sp_cert
-            - SHIBBOLETH_SP_PRIVKEY=/run/secrets/shibboleth_sp_privkey
+            - SHIBBOLETH_SP_ENCRYPT_CERT=/run/secrets/shibboleth_sp_cert
+            - SHIBBOLETH_SP_ENCRYPT_PRIVKEY=/run/secrets/shibboleth_sp_privkey
             - HTTPS_CERT_FILE=/run/secrets/https_cert_file
             - HTTPS_PRIVKEY_FILE=/run/secrets/https_privkey_file
             - COMANAGE_REGISTRY_ADMIN_GIVEN_NAME=ScottCmpAdmin
@@ -67,7 +67,7 @@ services:
             - COMANAGE_REGISTRY_EMAIL_ACCOUNT=mwa.telescope.registry@gmail.com
             - COMANAGE_REGISTRY_EMAIL_ACCOUNT_PASSWORD_FILE=/run/secrets/comanage_registry_email_account_password
             - COMANAGE_REGISTRY_ENABLE_PLUGIN=MailmanProvisioner
-            - SERVER_NAME=registry.mwatelescope.org
+            - COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN=registry.mwatelescope.org
         secrets:
             - shibboleth_sp_cert
             - shibboleth_sp_privkey
