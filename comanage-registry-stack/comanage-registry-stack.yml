@@ -16,12 +16,10 @@ services:
             - default
         deploy:
             replicas: 1
-        extra_hosts:
-            - "registry.mwatelescope.org:127.0.0.1"
 
     comanage-registry-ldap:
         image: sphericalcowgroup/comanage-registry-slapd
-        command: ["slapd", "-d", "256", "-h", "ldapi:/// ldap://127.0.0.1 ldaps:///", "-u", "openldap", "-g", "openldap"]
+        command: ["slapd", "-d", "256", "-h", "ldapi:/// ldaps:///", "-u", "openldap", "-g", "openldap"]
         volumes:
             - /srv/docker/var/lib/ldap:/var/lib/ldap
             - /srv/docker/etc/ldap/slapd.d:/etc/ldap/slapd.d
@@ -41,11 +39,8 @@ services:
             - default
         ports:
             - "636:636"
-            - "389:389"
         deploy:
             replicas: 1
-        extra_hosts:
-            - "registry.mwatelescope.org:127.0.0.1"
 
     comanage-registry:
         image: sphericalcowgroup/comanage-registry:hotfix-3.2.x-shibboleth-sp-3
@@ -86,8 +81,6 @@ services:
             - "443:443"
         deploy:
             replicas: 1
-        extra_hosts:
-            - "registry.mwatelescope.org:127.0.0.1"
 
 secrets:
     postgres_password:
