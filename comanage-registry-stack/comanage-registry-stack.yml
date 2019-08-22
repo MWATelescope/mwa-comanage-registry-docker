@@ -19,7 +19,7 @@ services:
 
     comanage-registry-ldap:
         image: sphericalcowgroup/comanage-registry-slapd
-        command: ["slapd", "-d", "256", "-h", "ldapi:/// ldaps:///", "-u", "openldap", "-g", "openldap"]
+        command: ["slapd", "-d", "256", "-h", "ldapi:/// ldap:/// ldaps:///", "-u", "openldap", "-g", "openldap"]
         volumes:
             - /srv/docker/var/lib/ldap:/var/lib/ldap
             - /srv/docker/etc/ldap/slapd.d:/etc/ldap/slapd.d
