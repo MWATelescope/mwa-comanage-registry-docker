@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.7'
 
 services:
 
@@ -43,7 +43,7 @@ services:
             replicas: 1
 
     comanage-registry:
-        image: sphericalcowgroup/comanage-registry:hotfix-3.2.x-shibboleth-sp-3
+        image: sphericalcowgroup/comanage-registry:3.2.5-shibboleth-sp-1
         volumes:
             - /srv/docker/srv/comanage-registry/local:/srv/comanage-registry/local
             - /srv/docker/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
