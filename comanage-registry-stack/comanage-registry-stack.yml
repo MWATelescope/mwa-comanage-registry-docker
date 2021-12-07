@@ -18,7 +18,7 @@ services:
             replicas: 1
 
     comanage-registry-ldap:
-        image: sphericalcowgroup/comanage-registry-slapd
+        image: sphericalcowgroup/comanage-registry-slapd:8
         command: ["slapd", "-d", "256", "-h", "ldapi:/// ldap:/// ldaps:///", "-u", "openldap", "-g", "openldap"]
         volumes:
             - /srv/docker/var/lib/ldap:/var/lib/ldap
