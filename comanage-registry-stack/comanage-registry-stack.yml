@@ -43,7 +43,7 @@ services:
             replicas: 1
 
     comanage-registry:
-        image: sphericalcowgroup/comanage-registry:3.3.4-shibboleth-sp-2
+        image: sphericalcowgroup/comanage-registry:4.0.1-shibboleth-sp-1
         volumes:
             - /srv/docker/srv/comanage-registry/local:/srv/comanage-registry/local
             - /srv/docker/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
@@ -83,7 +83,7 @@ services:
             replicas: 1
 
     comanage-registry-cron:
-        image: sphericalcowgroup/comanage-registry-cron:3.3.4-1
+        image: sphericalcowgroup/comanage-registry-cron:4.0.1-1
         volumes:
             - /srv/docker/srv/comanage-registry/local:/srv/comanage-registry/local
         networks:
