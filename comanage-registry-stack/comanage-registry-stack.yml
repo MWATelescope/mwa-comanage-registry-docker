@@ -18,7 +18,7 @@ services:
             replicas: 1
 
     comanage-registry-ldap:
-        image: sphericalcowgroup/comanage-registry-slapd:8
+        image: comanage-registry-slapd:1
         command: ["slapd", "-d", "256", "-h", "ldapi:/// ldap:/// ldaps:///", "-u", "openldap", "-g", "openldap"]
         volumes:
             - /srv/docker/var/lib/ldap:/var/lib/ldap
@@ -43,7 +43,7 @@ services:
             replicas: 1
 
     comanage-registry:
-        image: sphericalcowgroup/comanage-registry:4.0.2-shibboleth-sp-1
+        image: comanageproject/comanage-registry:4.1.2-shibboleth-sp-supervisor-6
         volumes:
             - /srv/docker/srv/comanage-registry/local:/srv/comanage-registry/local
             - /srv/docker/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
@@ -83,7 +83,7 @@ services:
             replicas: 1
 
     comanage-registry-cron:
-        image: sphericalcowgroup/comanage-registry-cron:4.0.1-1
+        image: comanageproject/comanage-registry-cron:4.1.2-6
         volumes:
             - /srv/docker/srv/comanage-registry/local:/srv/comanage-registry/local
         networks:
